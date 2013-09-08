@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MediaPlayerActivity!</string>
+    <string name="app_name">MediaPlayer</string>
+    <string name="loopone">单曲循环</string>
+    <string name="loopall">全曲循环</string>
+    <string name="noloop">正常播放</string>
+    <string name="randplay">随机播放</string>
+</resources>
