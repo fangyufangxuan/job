@@ -1,6 +1,7 @@
 #!/bin/bash
 input_file='qunar.txt'
-last=`cat $input_file | cut -d' ' -f1 | sort -nr | head -n 2 | tail -n 1`
+lines=2
+last=`cat $input_file | cut -d' ' -f1 | sort -nr | head -n $lines | tail -n 1`
 length=`cat $input_file | wc -l`
 i=1
 while [ $i -lt $length ]
