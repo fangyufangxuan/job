@@ -48,12 +48,6 @@ char *relat_path_2_abs(const char *path)
         }
     }
 
-    end++;
-    while (*end != '\0')
-    {
-        end++;
-    }
-
     p = index + 3;
     while (p < end)
     {
