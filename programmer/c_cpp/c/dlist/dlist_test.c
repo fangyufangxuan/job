@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (shuai fan), 
+ *         Author:  shuai fan, 
  *   Organization:  Dlut
  *
  * =====================================================================================
@@ -19,22 +19,34 @@
 #include <stdio.h>
 #include "dlist.h"
 
+static int print_int(void *data);
+
 int main() {
     int i = 0;
     dlist *list;
+    int first = 0;
 
-    list = dlist_new(0);
+    list = dlist_new((void*)first);
+    dlist_print(list, print_int);
+    printf("\n");
 
     for (i = 1; i < 10; i++) {
-        dlist_append(list, i);
+        dlist_append(list, (void*)i);
+        dlist_print(list, print_int);
+        printf("\n");
     }
 
-    dlist_print(list);
-
     for (i = 0; i <= 9; i++) {
-        dlist_delete_node(&list, i);
-        dlist_print(list);
+        dlist_delete_node(&list, 0);
+        dlist_print(list, print_int);
+        printf("\n");
     }
 
     return 0;
+}
+
+static int print_int(void *data) {
+    printf ("%d ", (int)data);
+
+    return DLIST_RET_OK;
 }

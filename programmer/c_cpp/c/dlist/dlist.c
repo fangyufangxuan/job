@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (shuai fan), 
+ *         Author:  shuai fan, 
  *   Organization:  Dlut
  *
  * =====================================================================================
@@ -20,7 +20,33 @@
 #include <stdlib.h>
 #include "dlist.h"
 
-dlist* dlist_new(int data) {
+struct _dlist
+{
+    struct _dlist* prior;
+    struct _dlist* next;
+    void *data;
+};
+
+static dlist* dlist_new_node(void *data) {
+    dlist *node = NULL;
+
+    if (node = malloc(sizeof(dlist))) {
+        node->data = data;
+        node->prior = NULL;
+        node->next = NULL;
+    }
+
+    return node;
+}
+
+static void dlist_free_node(dlist *l) {
+    l->prior = NULL;
+    l->next = NULL;
+
+    free(l);
+}
+
+dlist* dlist_new(void *data) {
     dlist *node = NULL;
 
     node = dlist_new_node(data);
@@ -35,48 +61,17 @@ void dlist_free(dlist *l) {
 
     while (node->next) {
         node = node->next;
-        dlist_delete_node(&l, node->prior->data);
+        dlist_delete_node(&l, 0);
     }
 }
 
-void dlist_print(dlist *l) {
-    dlist *node = l;
-
-    while (node) {
-        printf(" %d", node->data);
-        node = node->next;
-    }
-
-    printf("\n");
-}
-
-dlist* dlist_new_node(int data) {
-    dlist *node = NULL;
-
-    if (node = malloc(sizeof(dlist))) {
-        node->data = data;
-        node->prior = NULL;
-        node->next = NULL;
-    }
-
-    return node;
-}
-
-void dlist_free_node(dlist *l) {
-    l->prior = NULL;
-    l->next = NULL;
-
-    free(l);
-}
-
-void dlist_append(dlist *l, int data) {
+void dlist_append(dlist *l, void *data) {
     dlist *new_node;
     dlist *p;
 
     p = l;
 
     if (new_node = dlist_new_node(data)) {
-
         while (p->next) {
             p = p->next;
         }
@@ -86,17 +81,15 @@ void dlist_append(dlist *l, int data) {
     }
 }
 
-void dlist_delete_node(dlist **l, int data) {
+void dlist_delete_node(dlist **l, int index) {
     dlist *p;
+    int count = 0;
 
     p = *l;
 
-    while (p) {
-        if (p->data == data) {
-            break;
-        }
-
+    while (p && count < index) {
         p = p->next;
+        count++;
     }
 
     if (p == *l) {
@@ -110,4 +103,16 @@ void dlist_delete_node(dlist **l, int data) {
     }
 
     dlist_free_node(p);
+}
+
+int dlist_print(dlist *l, dlist_print_func_cb print) {
+    int ret = DLIST_RET_OK;
+    dlist *node = l;
+
+    while (node != NULL) {
+        print(node->data);
+        node = node->next;
+    }
+
+    return ret;
 }
