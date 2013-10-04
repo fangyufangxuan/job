@@ -105,12 +105,12 @@ void dlist_delete_node(dlist **l, int index) {
     dlist_free_node(p);
 }
 
-int dlist_print(dlist *l, dlist_print_func_cb print) {
-    int ret = DLIST_RET_OK;
+dlist_ret dlist_foreach(dlist *l, dlist_visit_func_cb visit, void *ctx) {
+    dlist_ret ret = DLIST_RET_OK;
     dlist *node = l;
 
-    while (node != NULL) {
-        print(node->data);
+    while (node != NULL && ret != DLIST_RET_STOP) {
+        ret = visit(ctx, node->data);
         node = node->next;
     }
 

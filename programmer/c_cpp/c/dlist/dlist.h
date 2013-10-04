@@ -2,13 +2,16 @@
 extern "C" {
 #endif
 
-#define DLIST_RET_OK 0
-
 struct _dlist;
 typedef struct _dlist dlist;
 
-typedef int (*dlist_print_func_cb)(void *data);
-int dlist_print(dlist *l, dlist_print_func_cb print);
+typedef enum dlist_ret {
+    DLIST_RET_OK = 0,
+    DLIST_RET_STOP = 1,
+} dlist_ret;
+
+typedef dlist_ret (*dlist_visit_func_cb)(void *ctx, void *data);
+dlist_ret dlist_foreach(dlist *l, dlist_visit_func_cb visit, void *ctx);
 
 dlist* dlist_new(void *data);
 
