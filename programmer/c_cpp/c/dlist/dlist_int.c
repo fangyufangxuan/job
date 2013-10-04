@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  dlist_test.c
+ *       Filename:  dlist_int.c
  *
- *    Description:  dlist test program
+ *    Description:  dlist test program(int)
  *
  *        Version:  1.0
  *        Created:  07/21/2013 10:49:19 PM
@@ -26,14 +26,12 @@ static dlist_ret max_cb(void *ctx, void *data);
 int main() {
     int i = 0;
     dlist *list;
-    int first = 0;
 
-    list = dlist_new((void*)first);
-    dlist_foreach(list, print_int_cb, NULL);
-    printf("\n");
+    list = dlist_new();
 
-    for (i = 1; i < 10; i++) {
+    for (i = 0; i < 10; i++) {
         dlist_append(list, (void*)i);
+        printf("count = %2d,\t", dlist_count(list));
         dlist_foreach(list, print_int_cb, NULL);
         printf("\n");
     }
@@ -46,8 +44,9 @@ int main() {
     dlist_foreach(list, max_cb, &max);
     printf("max = %d\n\n", max);
 
-    for (i = 0; i <= 9; i++) {
-        dlist_delete_node(&list, 0);
+    for (i = 0; i < 10; i++) {
+        dlist_delete_node(list, 0);
+        printf("count = %2d,\t", dlist_count(list));
         dlist_foreach(list, print_int_cb, NULL);
         printf("\n");
     }

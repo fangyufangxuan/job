@@ -13,13 +13,15 @@ typedef enum dlist_ret {
 typedef dlist_ret (*dlist_visit_func_cb)(void *ctx, void *data);
 dlist_ret dlist_foreach(dlist *l, dlist_visit_func_cb visit, void *ctx);
 
-dlist* dlist_new(void *data);
+dlist* dlist_new();
 
 void dlist_free(dlist *l);
 
 void dlist_append(dlist *l, void *data);
 
-void dlist_delete_node(dlist **l, int index);
+void dlist_delete_node(dlist *l, int index);
+
+int dlist_count(dlist *l);
 
 #ifdef __cplusplus
 }

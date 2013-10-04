@@ -46,68 +46,68 @@ static void dlist_free_node(dlist *l) {
     free(l);
 }
 
-dlist* dlist_new(void *data) {
-    dlist *node = NULL;
+dlist* dlist_new() {
+    dlist *head = NULL;
 
-    node = dlist_new_node(data);
+    head = dlist_new_node((void*)0);
 
-    return node;
+    return head;
 }
 
 void dlist_free(dlist *l) {
-    dlist *node = NULL;
-
-    node = l;
-
-    while (node->next) {
-        node = node->next;
-        dlist_delete_node(&l, 0);
+    while (l->data > 0) {
+        dlist_delete_node(l, 0);
     }
 }
 
 void dlist_append(dlist *l, void *data) {
     dlist *new_node;
-    dlist *p;
-
-    p = l;
+    dlist *p = l->next;
 
     if (new_node = dlist_new_node(data)) {
-        while (p->next) {
+        while (p != NULL && p->next != NULL) {
             p = p->next;
         }
 
-        new_node->prior = p;
-        p->next = new_node;     
+        if (l->next == NULL) {
+            new_node->prior = l;
+            l->next = new_node;
+        }
+        else {
+            new_node->prior = p;
+            p->next = new_node;
+        }
+        l->data++;
     }
 }
 
-void dlist_delete_node(dlist **l, int index) {
+void dlist_delete_node(dlist *l, int index) {
     dlist *p;
     int count = 0;
 
-    p = *l;
+    p = l->next;
 
     while (p && count < index) {
         p = p->next;
         count++;
     }
 
-    if (p == *l) {
-        *l = p->next;
-    } else {
-        p->prior->next = p->next;
-    }
-
+    p->prior->next = p->next;
     if (p->next) {
         p->next->prior = p->prior;
     }
 
+    (int)(l->data)--;
     dlist_free_node(p);
+}
+
+int dlist_count(dlist *l) {
+    return (int)(l->data);
 }
 
 dlist_ret dlist_foreach(dlist *l, dlist_visit_func_cb visit, void *ctx) {
     dlist_ret ret = DLIST_RET_OK;
-    dlist *node = l;
+    dlist *node = l->next;
 
     while (node != NULL && ret != DLIST_RET_STOP) {
         ret = visit(ctx, node->data);
