@@ -51,6 +51,8 @@ int main() {
         printf("\n");
     }
 
+    dlist_free(list);
+
     return 0;
 }
 
