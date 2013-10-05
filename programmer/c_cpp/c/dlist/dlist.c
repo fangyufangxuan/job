@@ -58,6 +58,8 @@ void dlist_free(dlist *l) {
     while (l->data > 0) {
         dlist_delete_node(l, 0);
     }
+
+    free(l);
 }
 
 void dlist_append(dlist *l, void *data) {
