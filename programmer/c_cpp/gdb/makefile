@@ -6,5 +6,5 @@ array: array.c
 struct: struct.c
 	gcc -g -o struct struct.c
 
-clean:
+.PHONY: clean
 	rm -rf array struct *.o *.out
